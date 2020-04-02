@@ -40,7 +40,9 @@ function pack() {
     fs.mkdirSync(distPath)
   
     // create a file to stream archive data to.
-    const output = fs.createWriteStream(path.join(distPath, `A4T1-${name}.pk3`))
+    const nameParts = name.split('/')
+    const archiveName = nameParts[nameParts.length - 1]
+    const output = fs.createWriteStream(path.join(distPath, `A4T1-${archiveName}.pk3`))
     const archive = archiver('zip', {
       zlib: { level: 9 } // Sets the compression level.
     })

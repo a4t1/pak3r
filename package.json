@@ -1,6 +1,6 @@
 {
   "name": "@a4t1/pak3r",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tool for packaging A4T1 stuff",
   "main": "index.js",
   "scripts": {
