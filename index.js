@@ -5,6 +5,7 @@ const process = require('process')
 const fs = require('fs')
 const archiver = require('archiver')
 const path = require('path')
+const hasha = require('hasha')
 
 require('yargs')
   .scriptName('pak3r')
@@ -42,7 +43,8 @@ function pack() {
     // create a file to stream archive data to.
     const nameParts = name.split('/')
     const archiveName = nameParts[nameParts.length - 1]
-    const output = fs.createWriteStream(path.join(distPath, `A4T1-${archiveName}.pk3`))
+    const archivePath = path.join(distPath, `A4T1-${archiveName}.pk3`)
+    const output = fs.createWriteStream(archivePath)
     const archive = archiver('zip', {
       zlib: { level: 9 } // Sets the compression level.
     })
@@ -52,6 +54,10 @@ function pack() {
     output.on('close', function () {
       console.log(archive.pointer() + ' total bytes')
       console.log('archiver has been finalized and the output file descriptor has closed.')
+
+      const hash = hasha.fromFileSync(archivePath, { algorithm: 'md5' })
+      fs.writeFileSync(path.join(distPath, `A4T1-${archiveName}.md5`), hash)
+
       resolve()
     })
     
